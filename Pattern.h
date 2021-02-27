@@ -1,3 +1,4 @@
+
 #ifndef Pattern_h
   #define Pattern_h
   
@@ -17,8 +18,6 @@
 			// Control functions
 			void start(void);
 			void stop(void);
-			void reset(void);
-			void clear(void);
 
 			// Configuration functions
 			void setStyle(uint8_t style);
@@ -32,16 +31,23 @@
 
 			// Returns the value in the pattern array
 			uint8_t getValue(uint8_t position);
+			
+			// Returns how many times the current pattern has repeated
+			uint8_t getCycles(void);
 						
 		private:
 			uint8_t _size;
+			uint8_t _tempSize;
 			uint8_t *_array;
 			uint8_t _style;
 			uint8_t _direction;
 			uint16_t _speed;
 			uint8_t _position;
 			bool _running;
-			
 			uint32_t	_timer;
+			uint8_t _cycles;
+			
+			void reset(void);
+			void clear(void);
 	};
 #endif
