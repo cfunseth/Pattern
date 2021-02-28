@@ -18,36 +18,33 @@
 			// Control functions
 			void start(void);
 			void stop(void);
+      void reset(void);
 
 			// Configuration functions
 			void setStyle(uint8_t style);
-			void setDirection(uint8_t direction);
 			void setSpeed(uint16_t speed);
-			void setSize(uint8_t size);
-			
-			// Update should be called every loop of the main function
-			// Returns true when an update has been performed
-			bool getUpdate(void);
+			void setLimit(uint8_t limit);
 
-			// Returns the value in the pattern array
+      // Update should be called every loop of the main function
+			bool update(void); 
+
+      // Status functions
 			uint8_t getValue(uint8_t position);
-			
-			// Returns how many times the current pattern has repeated
 			uint8_t getCycles(void);
 						
-		private:
-			uint8_t _size;
-			uint8_t _tempSize;
+     private:
 			uint8_t *_array;
+      uint8_t _cycles;
+      uint8_t _direction;
+      uint8_t _limit;
+      uint8_t _position;
+      bool _running;
+      uint8_t _random;
+			uint8_t _size;
+      uint16_t _speed;
 			uint8_t _style;
-			uint8_t _direction;
-			uint16_t _speed;
-			uint8_t _position;
-			bool _running;
-			uint32_t	_timer;
-			uint8_t _cycles;
-			
-			void reset(void);
+      uint32_t  _timer;
+      
 			void clear(void);
 	};
 #endif
