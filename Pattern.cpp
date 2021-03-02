@@ -66,7 +66,7 @@ void Pattern::reset(void)
 {
 	// Resets the pattern
 	_cycles = 0;
-  _limit = _size - 1;
+  _limit = _size;
 	_running = true;
 	clear();
 }
@@ -86,7 +86,7 @@ void Pattern::setSpeed(uint16_t speed)
 
 void Pattern::setLimit(uint8_t limit)
 {
-	// Sets an upper limit on which array elements are included in the pattern
+	// Sets an upper limit on how many array elements are included in the pattern
   _limit = limit;
   clear();
 }
@@ -201,7 +201,7 @@ bool Pattern::update(void)
 				}
 				else if(_position < _limit)
 				{
-					_array[(_limit - 1) - (_position - 1)] = 0;
+					_array[_limit - _position] = 0;
 					_position++;
 				}
 				else
@@ -225,8 +225,9 @@ bool Pattern::update(void)
 				else if(_position == _limit && _direction == 0)
 				{
 					_direction = 1;
-					_array[_position - 1] = 0;
-					_position = _position - 2;
+					_position--;					
+					_array[_position] = 0;
+					_position--;
 				}
 				else if(_position > 0 && _direction == 1)
 				{
@@ -271,24 +272,25 @@ bool Pattern::update(void)
 				}
 				break;
 			case 9:
-				// Chew
+				// Bounce
         if(_position == 0)
         {
           _array[_position] = 1;
-          _array[_position + 1] = 1;
+          //_array[_position + 1] = 1;
 
-          _array[_limit - _position] = 1;
-          _array[_limit - (_position + 1)] = 1;
+          _array[(_limit - 1) - _position] = 1;
+          //_array[(_limit - 1) - (_position + 1)] = 1;
           
           _position++;
         }
         else if(_position < _limit)
         {
-          _array[_position + 1] = 1;
+          
           _array[_position - 1] = 0;
+          _array[(_limit - 1) - (_position - 1)] = 0;
 
-          _array[_limit - (_position + 1)] = 1;
-          _array[_limit - (_position - 1)] = 0;
+          _array[_position] = 1;
+          _array[(_limit - 1) - _position] = 1;      
           
           _position++;
         }
@@ -296,7 +298,7 @@ bool Pattern::update(void)
         else
         {
           _direction = 0;
-          _position = 0;
+          _position = 1;
           _cycles++;
         }
 				break;
@@ -305,14 +307,14 @@ bool Pattern::update(void)
 				if(_position == 0)
 				{					
 					_array[_position] = 1;
-					_array[_limit - _position] = 1;
+					_array[(_limit - 1) - _position] = 1;
 					
 					_position++;
 				}
-				else if(_position < ((_limit + 2) / 2))
+				else if(_position < (_limit / 2))
 				{
 					_array[_position] = 1;
-					_array[_limit - _position] = 1;
+					_array[(_limit - 1) - _position] = 1;
 					
 					_position++;
 				}
@@ -327,31 +329,31 @@ bool Pattern::update(void)
 				if(_position == 0 && _direction == 0)
 				{					
 					_array[_position] = 1;					
-					_array[_limit - _position] = 1;
+					_array[(_limit - 1) - _position] = 1;
 					
 					_position++;
 				}
-				else if(_position < ((_limit + 2) / 2) && _direction == 0)
+				else if(_position < (_limit / 2) && _direction == 0)
 				{
 					_array[_position] = 1;
-					_array[_limit - _position ] = 1;
+					_array[(_limit - 1) - _position ] = 1;
 					
 					_position++;
 				}
-				else if(_position >= ((_limit + 2) / 2) && _direction == 0)
+				else if(_position >= (_limit / 2) && _direction == 0)
 				{
 					_direction = 1;					
 					_position = 0;
 					
 					_array[_position] = 0;					
-					_array[_limit - _position] = 0;
+					_array[(_limit - 1) - _position] = 0;
 					
 					_position++;
 				}
-				else if(_position < ((_limit + 2) / 2) && _direction == 1)
+				else if(_position < ((_limit - 1) / 2) && _direction == 1)
 				{					
 					_array[_position] = 0;					
-					_array[_limit - _position] = 0;
+					_array[(_limit - 1) - _position] = 0;
 					
 					_position++;
 				}
