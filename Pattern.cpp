@@ -50,6 +50,8 @@ void Pattern::clear(void)
   {
     _array[i] = 0;
   } 
+
+  _running = true;
 }
 
 void Pattern::start(void)
@@ -88,7 +90,8 @@ void Pattern::setLimit(uint8_t limit)
 {
 	// Sets an upper limit on how many array elements are included in the pattern
   _limit = limit;
-  clear();
+  _running = true;
+  //clear();
 }
 
 bool Pattern::update(void)
@@ -102,14 +105,12 @@ bool Pattern::update(void)
 		switch(_style) {
 			case 0:
 				// Off
-				for(uint8_t i = 0; i < _size; i++)
-				{
-					_array[i] = 0;
-				}
+				clear();
         _running = false;  // No need to keep updating since it's a static style
 				break;
 			case 1:
 				// Solid
+        clear();
 				for(uint8_t i = 0; i < _limit; i++)
 				{
 					_array[i] = 1;
@@ -141,6 +142,7 @@ bool Pattern::update(void)
 			case 3:
 				// Random
 				// Fills each element of the array with a random value
+        clear();
 				for(uint8_t i = 0; i < _limit; i++)
 				{
 					_array[i] = rand() % 2;
@@ -177,7 +179,7 @@ bool Pattern::update(void)
 			case 5:
 				// Fill
 				if(_position == 0)
-				{					
+				{
 					_array[_position] = 1;
 					_position++;
 				}
@@ -187,8 +189,8 @@ bool Pattern::update(void)
 					_position++;
 				}
 				else
-				{					
-					clear();
+				{			
+          clear();		
 					_cycles++;
 				}
 				break;
